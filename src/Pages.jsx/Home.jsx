@@ -1,7 +1,12 @@
 import React from 'react'
 import hero from '../assets/images/hero.webp'
+import Button from '../Components/Common/Button';
+import {useNavigate} from 'react-router-dom';
 
 function Home() {
+
+const navigate = useNavigate();
+
   return (
     <section className="max-w-7xl mx-auto px-6 pt-24 ">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
@@ -17,10 +22,11 @@ function Home() {
             instant feedback, and performance insights.
           </p>
 
-          <button className="mt-6 px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600
-              transform hover:scale-105 transition duration-200 shadow hover:shadow-lg">
+          <Button 
+          className="mt-6 px-6 py-3 transform hover:scale-105 transition duration-200 shadow hover:shadow-lg"
+          onClick={()=>navigate("/setup")}>
             Start Mock Interview
-          </button>
+          </Button>
         </div>
 
         {/* RIGHT SIDE — IMAGE */}
