@@ -14,27 +14,39 @@ Write and track answers per question
 
 🚀 Features
 
-🧠 AI-generated interview questions (Gemini API)
-📋 Step-by-step interview flow (one question at a time)
-⏮️⏭️ Previous / Next navigation with disabled states
-✍️ Answer tracking per question using indexed state
-💾 Persistent interview setup using localStorage
-🎨 Clean & modern UI using Tailwind CSS
+ AI-generated interview questions (Gemini API)
+
+ Step-by-step interview flow (one question at a time)
+
+ Previous / Next navigation with disabled states
+
+ Answer tracking per question using indexed state
+
+ Persistent interview setup using localStorage
+
+ Clean & modern UI using Tailwind CSS
 
 
 🛠️ Tech Stack
 
 Frontend: React (Vite)
+
 Styling: Tailwind CSS
+
 State Management: React Hooks (useState, useEffect)
+
 API: Google Gemini API
+
 HTTP Client: Axios
+
 Build Tool: Vite
 
 
 🔮 Future Improvements
 
-🤖 Voice-based interviews
-💾 Save interview history
-⏱️ Timed interview mode
+   Voice-based interviews
+
+   Save interview history
+
+   Timed interview mode
 
