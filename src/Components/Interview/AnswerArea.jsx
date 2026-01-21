@@ -26,8 +26,6 @@ const handleAnswerChange = (e)=>{
       }
     }
     
-
-  
   return (
     <div className="space-y-3">
     <label className="text-sm font-medium text-slate-300 ">
