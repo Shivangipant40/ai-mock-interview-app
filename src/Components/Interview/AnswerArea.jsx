@@ -1,9 +1,12 @@
 import React from 'react'
 import Button from '../Common/Button'
 
-function AnswerArea({questions,currentIndex,setCurrentIndex,answer,setAnswer}) {
+function AnswerArea({questions,currentIndex,setCurrentIndex,answer,setAnswer,endInterview}) {
 
   if (!questions || questions.length === 0) return null;
+  //to check the index of last question 
+  const isLastQuestion = currentIndex === questions.length - 1;
+
 
 // handling typing in text area
 const handleAnswerChange = (e)=>{
@@ -25,6 +28,8 @@ const handleAnswerChange = (e)=>{
          
       }
     }
+
+    
     
   return (
     <div className="space-y-3">
@@ -56,7 +61,9 @@ const handleAnswerChange = (e)=>{
     <span className=' text-xs text-slate-500'>Tip: Aim for a clear, structured response</span>
     <div className='flex items-center justify-between '>
     <Button size='lg' onClick={handlePrev} disabled ={currentIndex === 0}>PREVIOUS</Button>
-    <Button size ='lg' onClick={handleNext} disabled={currentIndex===questions.length-1}>NEXT</Button>
+    <Button size ="lg" onClick={endInterview} disabled={!isLastQuestion}>END INTERVIEW</Button>
+    <Button size ='lg' onClick={handleNext} disabled={currentIndex===questions.length-1} >NEXT</Button>
+  
     </div>
     </div>
 
