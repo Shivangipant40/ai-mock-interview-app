@@ -40,7 +40,7 @@ function InterviewRoom() {
      Return only the questions as a numbered list.`
 
    try{
-       const getApi = import.meta.env.VITE_GEMINI_API_KEY;
+       const getApi = import.meta.env.VITE_OPENROUTER_API_KEY;
        // FIXED: Correct OpenRouter URL (no key in URL)
       const response = await axios.post(
         "https://openrouter.ai/api/v1/chat/completions",

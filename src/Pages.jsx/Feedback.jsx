@@ -68,7 +68,7 @@ ${questions
 `;
 
     try {
-      const getApi = import.meta.env.VITE_GEMINI_API_KEY;
+      const getApi = import.meta.env.VITE_OPENROUTER_API_KEY;
 
       const response = await axios.post(
         "https://openrouter.ai/api/v1/chat/completions",
