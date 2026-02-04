@@ -10,11 +10,9 @@ Navigate questions one by one (Previous / Next)
 
 Write and track answers per question
 
-(Future) Get AI-based evaluation and feedback
+ AI-based evaluation and feedback
 
 🚀 Features
-
- AI-generated interview questions (Gemini API)
 
  Step-by-step interview flow (one question at a time)
 
@@ -35,7 +33,9 @@ Styling: Tailwind CSS
 
 State Management: React Hooks (useState, useEffect)
 
-API: Google Gemini API
+AI Orchestration: OpenRouter API
+
+Note: I utilized OpenRouter to access the GPT-OSS-20B and Gemini Flash models via a unified OpenAI-compatible interface. This allows for model-switching and improved latency.
 
 HTTP Client: Axios
 
