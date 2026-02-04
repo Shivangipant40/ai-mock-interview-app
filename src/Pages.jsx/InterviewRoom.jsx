@@ -6,9 +6,7 @@ import InterviewSetup from './InterviewSetup'
 import { useNavigate } from 'react-router-dom'
 
 function InterviewRoom() {
-  console.log("API KEY:", import.meta.env.VITE_GEMINI_API_KEY);
-
-
+  
   const navigate = useNavigate()
 // dummy data
 
@@ -25,44 +23,63 @@ function InterviewRoom() {
   const[currentIndex,setCurrentIndex] = useState(0)
   const[answer,setAnswer]=useState([]);
   
-  
-
+//retrieving setup data
   const setup = JSON.parse(
     localStorage.getItem("interviewSetup")
   );
 
-
   const generateQuestions= async()=>{
+
+    // checking if user skipped setup sending them back
+    if (!setup) {
+      navigate("/");
+      return;
+    }
     setLoading(true)
     const prompt = `Generate ${setup.questionCount} interview questions for a ${setup.experience} level with  ${setup.jobRole} job role
      Return only the questions as a numbered list.`
 
    try{
        const getApi = import.meta.env.VITE_GEMINI_API_KEY;
-       console.log(getApi)
-       const response = await axios.post(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${getApi}`, 
-         {
-            contents: [
-              {
-                parts: [
-                  {
-                    text: prompt,
-                  },
-                ],
-              },
-            ],
-          
-       })
+       // FIXED: Correct OpenRouter URL (no key in URL)
+      const response = await axios.post(
+        "https://openrouter.ai/api/v1/chat/completions",
+        {
+          model: "openai/gpt-oss-20b:free",
+          messages: [
+            {
+              role: "system",
+              content: "You are a professional interviewer. Provide a numbered list of interview questions."
+            },
+            {
+              role: "user",
+              content: prompt
+            }
+          ]
+        },
+        {
+          // FIXED: Key goes in the Authorization Header
+          headers: {
+            "Authorization": `Bearer ${getApi}`,
+            "Content-Type": "application/json"
+          }
+        }
+      );
       //  gemini response
-      const text = response.data.candidates[0].content.parts[0].text
+      const text = response.data.choices[0].message.content;
       console.log(text)
+      // spliiting response into an array
       const questionList = text.split("\n").filter((q) => q.trim() !== "");
 
       setQuestions(questionList)
       setLoading(false)
    } catch(error){
       console.log( "Error fetching questions: ",error)
-   }
+     // Fallback if API fails
+      setQuestions(["Describe your most challenging project.", "How do you handle conflict in a team?"]);
+    } finally {
+      setLoading(false);
+    }
   }
 
   useEffect(()=>{
@@ -85,8 +102,6 @@ function InterviewRoom() {
 navigate("/feedback");
   
 };
-
-   
 
   return (
     <>

@@ -40,10 +40,10 @@ function InterviewSetup() {
       <select
          className="bg-slate-800 p-3 rounded w-full mb-6"
          {...register("experience", {required:"experience is  required"})}>
-          <option value="5">Fresher</option>
-          <option value="10">Junior</option>
-          <option value="15">Mid-Level</option>
-          <option value="20">Senior</option>
+          <option value="0">Fresher</option>
+          <option value="0-1">Junior</option>
+          <option value="1-3">Mid-Level</option>
+          <option value="5-7">Senior</option>
           </select>
 
         {/* total questions */}
@@ -76,10 +76,7 @@ function InterviewSetup() {
  
         <Button type="submit" size="lg" onClick={()=>navigate("/interview")} disabled = {!isValid}>
         Start Interview
-        </Button>
-
-
-        
+        </Button> 
         </form>
   );
 }

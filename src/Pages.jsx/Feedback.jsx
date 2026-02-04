@@ -7,7 +7,7 @@ function Feedback() {
   const [loading, setLoading] = useState(true);
   const [aiFeedback, setAiFeedback] = useState("");
 
-  // 1️⃣ Get interview data from localStorage
+  //  Get interview data from localStorage
   const interviewData = JSON.parse(
     localStorage.getItem("interviewData")
   );
@@ -23,7 +23,7 @@ function Feedback() {
 
   const { questions, answers, setup } = interviewData;
 
-  // 2️⃣ Basic stats
+  // Basic stats
   const answeredCount = answers.filter(
     (ans) => ans && ans.trim() !== ""
   ).length;
@@ -32,7 +32,7 @@ function Feedback() {
     (answeredCount / questions.length) * 100
   );
 
-  // 3️⃣ Generate AI feedback
+  //  Generate AI feedback
   const generateFeedback = async () => {
     setLoading(true);
 
@@ -42,12 +42,19 @@ You are an interview evaluator.
 Job Role: ${setup.jobRole}
 Experience Level: ${setup.experience}
 
-Evaluate the candidate's answers.
-Provide:
-1. Overall performance
-2. Strengths
-3. Areas of improvement
-4. Suggestions for next practice
+Evaluate the following Q&A session. 
+  
+  STRICT FORMATTING RULES:
+  - DO NOT USE TABLES.
+  - Use clear Headings (###) for each section.
+  - Use Bullet points for lists.
+  - Use Bold text for key terms.
+  
+  Provide the following sections:
+  1. Overall Performance: Give a score out of 10 and a 2-sentence summary.
+  2. Strengths: List 3-4 specific things the candidate did well.
+  3. Areas of Improvement: List specific technical gaps found in the answers.
+  4. Better Answers: For any weak response, provide a "Model Answer" in a few sentences.
 
 Questions and Answers:
 ${questions
@@ -61,26 +68,40 @@ ${questions
 `;
 
     try {
-      const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+      const getApi = import.meta.env.VITE_GEMINI_API_KEY;
 
       const response = await axios.post(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`,
+        "https://openrouter.ai/api/v1/chat/completions",
         {
-          contents: [
+          model: "openai/gpt-oss-20b:free",
+          messages: [
             {
-              parts: [{ text: prompt }],
+              role: "system",
+              content: "You are a professional technical recruiter providing constructive feedback."
             },
-          ],
+            {
+              role: "user",
+              content: prompt
+            }
+          ]
+        },
+        {
+          // FIXED: Key goes in the Authorization Header
+          headers: {
+            "Authorization": `Bearer ${getApi}`,
+            "Content-Type": "application/json"
+          }
         }
       );
-
-      const text =
-        response.data.candidates[0].content.parts[0].text;
-
+//parsing 
+      const text = response.data.choices[0].message.content;
+       
       setAiFeedback(text);
-      setLoading(false);
+      
     } catch (error) {
       console.error("Feedback API error:", error);
+      setAiFeedback("Sorry, we couldn't generate detailed feedback at this moment. Please check your answers above.");
+    } finally {
       setLoading(false);
     }
   };
