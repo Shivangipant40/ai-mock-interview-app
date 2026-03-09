@@ -10,7 +10,6 @@ function InterviewSetup() {
     localStorage.setItem("interviewSetup", JSON.stringify(data));
     navigate("/interview");
   };
-
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}

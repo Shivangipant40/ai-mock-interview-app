@@ -13,6 +13,8 @@ const handleAnswerChange = (e)=>{
   const newAnswer = [...answer];
   newAnswer[currentIndex] = e.target.value;
   setAnswer(newAnswer);
+
+  localStorage.setItem("interviewAnswers",JSON.stringify(newAnswer))
 }
 
   const handleNext = ()=>{
@@ -28,9 +30,7 @@ const handleAnswerChange = (e)=>{
          
       }
     }
-
-    
-    
+ 
   return (
     <div className="space-y-3">
     <label className="text-sm font-medium text-slate-300 ">
@@ -61,7 +61,7 @@ const handleAnswerChange = (e)=>{
     <span className=' text-xs text-slate-500'>Tip: Aim for a clear, structured response</span>
     <div className='flex items-center justify-between '>
     <Button size='lg' onClick={handlePrev} disabled ={currentIndex === 0}>PREVIOUS</Button>
-    <Button size ="lg" onClick={endInterview} disabled={!isLastQuestion}>END INTERVIEW</Button>
+    <Button size ="lg" onClick={endInterview} disabled={!isLastQuestion} >END INTERVIEW</Button>
     <Button size ='lg' onClick={handleNext} disabled={currentIndex===questions.length-1} >NEXT</Button>
   
     </div>

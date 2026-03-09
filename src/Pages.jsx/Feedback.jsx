@@ -23,6 +23,16 @@ function Feedback() {
 
   const { questions, answers, setup } = interviewData;
 
+  //handling exit
+
+  const handleExit = ()=>{
+    localStorage.removeItem("currentQuestions")
+    localStorage.removeItem("interviewAnswers")
+    localStorage.removeItem("interviewData")
+    localStorage.removeItem("interviewSetup")
+    console.log("Storage cleared!");
+  }
+
   // Basic stats
   const answeredCount = answers.filter(
     (ans) => ans && ans.trim() !== ""
@@ -172,18 +182,20 @@ ${questions
         {/* Actions */}
         <div className="flex justify-center gap-4">
           <button
-            onClick={() => navigate("/interview")}
+            onClick={() =>{handleExit();navigate("/setup")}}
             className="px-6 py-2 rounded-md bg-blue-500 hover:bg-blue-600 transition"
           >
             Retry Interview
           </button>
 
           <button
-            onClick={() => navigate("/")}
+            onClick={() =>{handleExit();navigate("/")}}
             className="px-6 py-2 rounded-md border border-slate-600 hover:bg-slate-800 transition"
           >
-            Back to Home
+            Exit Interview
           </button>
+
+          
         </div>
       </div>
     </div>

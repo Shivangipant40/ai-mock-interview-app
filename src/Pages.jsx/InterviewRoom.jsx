@@ -19,14 +19,17 @@ function InterviewRoom() {
  
 // ]
   const[questions,setQuestions] = useState([])
-  const[loading,setLoading] = useState(true)     //make it true while using api 
+  const[loading,setLoading] = useState(true)          //make it true while using api 
   const[currentIndex,setCurrentIndex] = useState(0)
   const[answer,setAnswer]=useState([]);
+
+  
   
 //retrieving setup data
   const setup = JSON.parse(
     localStorage.getItem("interviewSetup")
   );
+
 
   const generateQuestions= async()=>{
 
@@ -41,7 +44,7 @@ function InterviewRoom() {
 
    try{
        const getApi = import.meta.env.VITE_OPENROUTER_API_KEY;
-       // FIXED: Correct OpenRouter URL (no key in URL)
+     
       const response = await axios.post(
         "https://openrouter.ai/api/v1/chat/completions",
         {
@@ -58,7 +61,7 @@ function InterviewRoom() {
           ]
         },
         {
-          // FIXED: Key goes in the Authorization Header
+          //  Key goes in the Authorization Header
           headers: {
             "Authorization": `Bearer ${getApi}`,
             "Content-Type": "application/json"
@@ -72,7 +75,12 @@ function InterviewRoom() {
       const questionList = text.split("\n").filter((q) => q.trim() !== "");
 
       setQuestions(questionList)
+      //adding the genrated questions in localstorage 
+      //we must stringify becoz localstorage doesnt understand array only string
+
+      localStorage.setItem("currentQuestions", JSON.stringify(questionList))
       setLoading(false)
+
    } catch(error){
       console.log( "Error fetching questions: ",error)
      // Fallback if API fails
@@ -83,10 +91,28 @@ function InterviewRoom() {
   }
 
   useEffect(()=>{
-    generateQuestions()
+   const savedQuestions = localStorage.getItem("currentQuestions")
+   if (savedQuestions){
+    const parsedQuestions = JSON.parse(savedQuestions)
+    setQuestions(parsedQuestions)
+    setLoading(false)
+
+   } else{
+     generateQuestions()
+   }
+
+   const savedAnswers = localStorage.getItem("interviewAnswers")
+   if(savedAnswers){
+    const parsedAnswers = JSON.parse(savedAnswers)
+    setAnswer(parsedAnswers)
+   }
+
   },[])
    
    if (loading) return<p>LOADING...</p>
+
+// what if user refreshes state would be gone and asnwers tooo so for answers we have to store 
+
 
 // function to end interview and saved data to local storage 
 
@@ -94,10 +120,11 @@ function InterviewRoom() {
   localStorage.setItem(
     "interviewData",
     JSON.stringify({
-      questions:questions,  //dummyData
+      questions:questions,    //dummyData
       answers: answer,
       setup:setup,
     })
+
   );
 navigate("/feedback");
   

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Brain} from "lucide-react";
-import Navbar from './Navbar'
+import Navbar from './Navbar.jsx'
 
 
 function Header() {
